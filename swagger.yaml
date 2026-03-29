@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Event Booking API
+  version: 1.0.0
+  description: Mini Event Management System
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /events:
+    get:
+      summary: Get all upcoming events
+      responses:
+        '200':
+          description: List of events
+
+    post:
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, date, total_capacity]
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                date:
+                  type: string
+                  example: "2026-04-01 18:00:00"
+                total_capacity:
+                  type: integer
+      responses:
+        '200':
+          description: Event created
+
+  /bookings:
+    post:
+      summary: Book a ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, event_id]
+              properties:
+                user_id:
+                  type: integer
+                event_id:
+                  type: integer
+      responses:
+        '200':
+          description: Booking successful
+
+  /bookings/user/{id}:
+    get:
+      summary: Get bookings of a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of bookings
+
+  /bookings/attendance:
+    post:
+      summary: Mark attendance using booking code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [booking_code]
+              properties:
+                booking_code:
+                  type: string
+      responses:
+        '200':
+          description: Attendance recorded
